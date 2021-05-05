@@ -36,7 +36,7 @@ def index(request):
 
     r = session.get(url,headers=headers)
     json = r.json()
-    match = json['matches']
+    
 
     matches = sorted(json['matches'],key=lambda k: k['utcDate'],reverse=True)
 
