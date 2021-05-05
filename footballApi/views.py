@@ -19,8 +19,7 @@ API_KEY = os.environ.get('API_KEY')
 headers={'X-Auth-Token':API_KEY}
 base_url ='http://api.football-data.org/v2/'
 
-session = CachedSession(expire_after=360)
-session = requests.Session()
+requests_cache.install_cache('football_data_cache',backend='sqlite',expire_after=180)
 
 
     
@@ -34,7 +33,7 @@ def index(request):
     date_from = date_to - datetime.timedelta(days=7)
     url = f"{base_url}{match_uri}?dateFrom={date_from}&dateTo={date_to}"
 
-    r = session.get(url,headers=headers)
+    r = requests.get(url,headers=headers)
     json = r.json()
     
 
@@ -61,11 +60,11 @@ def competitions(request):
            f'competitions/{league[3]}/standings?',
            f'competitions/{league[4]}/standings?']
 
-    r_pl = session.get(base_url+uri[0],headers=headers)
-    r_bl1 = session.get(base_url+uri[1],headers=headers)
-    r_sa = session.get(base_url+uri[2],headers=headers)
-    r_pd = session.get(base_url+uri[3],headers=headers)
-    r_fl1 = session.get(base_url+uri[4],headers=headers)
+    r_pl = requests.get(base_url+uri[0],headers=headers)
+    r_bl1 = requests.get(base_url+uri[1],headers=headers)
+    r_sa = requests.get(base_url+uri[2],headers=headers)
+    r_pd = requests.get(base_url+uri[3],headers=headers)
+    r_fl1 = requests.get(base_url+uri[4],headers=headers)
 
     r_pl_json = r_pl.json()
     r_bl1_json = r_bl1.json()
@@ -108,11 +107,11 @@ def scorers(request):
            f'competitions/{league[3]}/scorers',
            f'competitions/{league[4]}/scorers']
 
-    r_pl = session.get(base_url+uri[0],headers=headers).json()
-    r_bl1 = session.get(base_url+uri[1],headers=headers).json()
-    r_sa = session.get(base_url+uri[2],headers=headers).json()
-    r_pd = session.get(base_url+uri[3],headers=headers).json()
-    r_fl1 = session.get(base_url+uri[4],headers=headers).json()
+    r_pl = requests.get(base_url+uri[0],headers=headers).json()
+    r_bl1 = requests.get(base_url+uri[1],headers=headers).json()
+    r_sa = requests.get(base_url+uri[2],headers=headers).json()
+    r_pd = requests.get(base_url+uri[3],headers=headers).json()
+    r_fl1 = requests.get(base_url+uri[4],headers=headers).json()
 
     # print(r_pl)
 
@@ -148,11 +147,11 @@ def match(request):
     
     url = 'https://api.football-data.org/v2/matches/?id=308649'
 
-    r = session.get(url,headers={'X-Auth-Token':'64f5da68f8b34dc3b3e4de20ccb0b8e9'})
+    r = requests.get(url,headers={'X-Auth-Token':'64f5da68f8b34dc3b3e4de20ccb0b8e9'})
     json = r.json()
     
 
-    r2= session.get(base_url+team_uri,headers=headers)
+    r2= requests.get(base_url+team_uri,headers=headers)
     json1=r2.json()
     data ={
         
