@@ -13,7 +13,7 @@ import datetime
 from .forms import MatchForm
 import ast
 
-from django.core.management.utils import get_random_secret_key
+
 
 API_KEY = os.environ.get('API_KEY')
 headers={'X-Auth-Token':API_KEY}
@@ -40,7 +40,7 @@ def index(request):
 
     matches = sorted(json['matches'],key=lambda k: k['utcDate'],reverse=True)
 
-    print(get_random_secret_key)
+
 
     
 
